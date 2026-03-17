@@ -130,6 +130,12 @@ sudo chmod 666 /var/lib/dhcp/dhcpd.leases
 sudo dhcpd -4 -cf /etc/dhcp/dhcpd.conf [interface_wireless]
 ```
 
+#### Download file konfigurasi `hostapd.conf`:
+
+```
+wget https://raw.githubusercontent.com/fixploit03/catatan-linux/refs/heads/main/Membuat%20AP%20di%20Linux%20Menggunakan%20hostapd/hostapd.conf
+```
+
 #### Jalankan AP:
 
 ```bash
