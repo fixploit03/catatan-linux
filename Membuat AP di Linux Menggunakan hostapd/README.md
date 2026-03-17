@@ -12,12 +12,12 @@
 
 ```bash
 sudo apt-get update
-sudo apt-get install hostapd isc-dhcp-server iw iptables
+sudo apt-get install hostapd isc-dhcp-server iw iptables wget
 ```
 
 ## Langkah-Langkah
 
-#### Cek interface:
+#### 1. Cek interface:
 
 ```bash
 ip l show
@@ -29,7 +29,7 @@ Pastikan ada output interface wireless dan interface internet:
 - Interface wireless: `wlan*, wlp*, wlx*`
 - Interface internet: `eth*`, `enp*`
 
-#### Cek koneksi internet di interface internet:
+#### 2. Cek koneksi internet di interface internet:
 
 ```bash
 ip a show [interface_internet]
@@ -39,7 +39,7 @@ ping -I [interface_internet] -c 4 google.com
 
 ![](https://github.com/fixploit03/catatan-linux/blob/main/Membuat%20AP%20di%20Linux%20Menggunakan%20hostapd/img/2.png)
 
-#### Cek apakah interface wireless mendukung mode AP:
+#### 3. Cek apakah interface wireless mendukung mode AP:
 
 ```bash
 iw list | grep -A 10 "Supported interface modes"
@@ -47,7 +47,7 @@ iw list | grep -A 10 "Supported interface modes"
 
 ![](https://github.com/fixploit03/catatan-linux/blob/main/Membuat%20AP%20di%20Linux%20Menggunakan%20hostapd/img/3.png)
 
-#### Cek jenis cipher yang didukung interface wireless:
+#### 4. Cek jenis cipher yang didukung interface wireless:
 
 ```bash
 iw list | grep -A 12 "Supported Ciphers"
@@ -55,20 +55,20 @@ iw list | grep -A 12 "Supported Ciphers"
 
 ![](https://github.com/fixploit03/catatan-linux/blob/main/Membuat%20AP%20di%20Linux%20Menggunakan%20hostapd/img/4.png)
 
-#### Stop service yang dapat mengganggu:
+#### 5. Stop service yang dapat mengganggu:
 
 ```bash
 sudo systemctl stop wpa_supplicant
 sudo systemctl stop NetworkManager
 ```
 
-#### Set regulasi domain ke negara Indonesia:
+#### 6. Set regulasi domain ke negara Indonesia:
 
 ```bash
 sudo iw reg set ID
 ```
 
-#### Set IP address:
+#### 7. Set IP address:
 
 ```bash
 sudo ip a f dev [interface_wireless]
@@ -76,7 +76,7 @@ sudo ip a a 10.10.10.1/24 dev [interface_wireless]
 sudo ip l s [interface_wireless] up
 ```
 
-#### Aktifkan internet sharing (NAT):
+#### 8. Aktifkan internet sharing (NAT):
 
 ```bash
 # Bersihkan semua rules iptables yang ada
@@ -94,14 +94,14 @@ sudo iptables -A FORWARD -i [interface_wireless] -o [interface_internet] -j ACCE
 sudo iptables -A FORWARD -i [interface_internet] -o [interface_wireless] -m state --state RELATED,ESTABLISHED -j ACCEPT
 ```
 
-#### Backup file `dhcpd.conf`:
+#### 9. Backup file `dhcpd.conf`:
 
 ```bash
 sudo touch /var/lib/dhcp/dhcpd.leases
 sudo cp /etc/dhcp/dhcpd.conf /etc/dhcp/dhcpd.conf.orig
 ```
 
-#### Buat konfigurasi DHCP Server:
+#### 10. Buat konfigurasi DHCP Server:
 
 ```bash
 sudo tee /etc/dhcp/dhcpd.conf <<EOF
@@ -126,13 +126,13 @@ subnet 10.10.10.0 netmask 255.255.255.0 {
 EOF
 ```
 
-#### Ubah permission file `dhcpd.leases`:
+#### 11. Ubah permission file `dhcpd.leases`:
 
 ```bash
 sudo chmod 666 /var/lib/dhcp/dhcpd.leases
 ```
 
-#### Jalankan DHCP Server:
+#### 12. Jalankan DHCP Server:
 
 ```bash
 sudo dhcpd -4 -cf /etc/dhcp/dhcpd.conf [interface_wireless]
@@ -140,13 +140,13 @@ sudo dhcpd -4 -cf /etc/dhcp/dhcpd.conf [interface_wireless]
 
 ![](https://github.com/fixploit03/catatan-linux/blob/main/Membuat%20AP%20di%20Linux%20Menggunakan%20hostapd/img/5.png)
 
-#### Download file konfigurasi `hostapd.conf`:
+#### 13. Download file konfigurasi `hostapd.conf`:
 
 ```
 wget https://raw.githubusercontent.com/fixploit03/catatan-linux/refs/heads/main/Membuat%20AP%20di%20Linux%20Menggunakan%20hostapd/hostapd.conf
 ```
 
-#### Jalankan AP:
+#### 14. Jalankan AP:
 
 ```bash
 sudo hostapd -i [interface_wireless] -B hostapd.conf
