@@ -23,6 +23,8 @@ sudo apt-get install hostapd isc-dhcp-server iw iptables
 ip l show
 ```
 
+![](https://github.com/fixploit03/catatan-linux/blob/main/Membuat%20AP%20di%20Linux%20Menggunakan%20hostapd/img/1.png)
+
 Pastikan ada output interface wireless dan interface internet:
 - Interface wireless: `wlan*, wlp*, wlx*`
 - Interface internet: `eth*`, `enp*`
@@ -35,17 +37,23 @@ ip route | grep default
 ping -I [interface_internet] -c 4 google.com
 ```
 
+![](https://github.com/fixploit03/catatan-linux/blob/main/Membuat%20AP%20di%20Linux%20Menggunakan%20hostapd/img/2.png)
+
 #### Cek apakah interface wireless mendukung mode AP:
 
 ```bash
 iw list | grep -A 10 "Supported interface modes"
 ```
 
+![](https://github.com/fixploit03/catatan-linux/blob/main/Membuat%20AP%20di%20Linux%20Menggunakan%20hostapd/img/3.png)
+
 #### Cek jenis cipher yang didukung interface wireless:
 
 ```bash
 iw list | grep -A 12 "Supported Ciphers"
 ```
+
+![](https://github.com/fixploit03/catatan-linux/blob/main/Membuat%20AP%20di%20Linux%20Menggunakan%20hostapd/img/4.png)
 
 #### Stop service yang dapat mengganggu:
 
@@ -130,6 +138,8 @@ sudo chmod 666 /var/lib/dhcp/dhcpd.leases
 sudo dhcpd -4 -cf /etc/dhcp/dhcpd.conf [interface_wireless]
 ```
 
+![](https://github.com/fixploit03/catatan-linux/blob/main/Membuat%20AP%20di%20Linux%20Menggunakan%20hostapd/img/5.png)
+
 #### Download file konfigurasi `hostapd.conf`:
 
 ```
@@ -141,3 +151,5 @@ wget https://raw.githubusercontent.com/fixploit03/catatan-linux/refs/heads/main/
 ```bash
 sudo hostapd -i [interface_wireless] -B hostapd.conf
 ```
+
+![](https://github.com/fixploit03/catatan-linux/blob/main/Membuat%20AP%20di%20Linux%20Menggunakan%20hostapd/img/6.png)
