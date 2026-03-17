@@ -1,9 +1,11 @@
 # Membuat AP di Linux Menggunakan hostapd
 
 ## Persyaratan
+- Virtual Machine ([VirtualBox](https://www.virtualbox.org/))
 - OS Linux ([Ubuntu 24.04](https://releases.ubuntu.com/noble/))
 - Akses root (`sudo`)
 - Adapter Wi-Fi yang mendukung mode AP
+- Network Bridged
 - Koneksi internet
 
 ## Instalasi
