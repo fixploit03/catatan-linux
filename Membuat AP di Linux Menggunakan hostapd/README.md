@@ -12,7 +12,7 @@
 
 ```bash
 sudo apt-get update
-sudo apt-get install hostapd isc-dhcp-server iw
+sudo apt-get install hostapd isc-dhcp-server iw iptables
 ```
 
 ## Langkah-Langkah
